@@ -32,22 +32,17 @@ results = []
 for div in soup.find_all('div', class_='entry unvoted'):
     # Advertisements throw exception
     try:
-        a = div.find('a', class_='title may-blank outbound')
-        title = a.get_text()
+        title = div.select('a.title.may-blank')[0].get_text()
+        link = div.select('a.bylink.comments.may-blank')[0]['href']
     except:
         continue
 
-    try:
-        reddit_post = div.find('a', class_='bylink comments may-blank')['href']
-    except:
-        reddit_post = div.find('a', class_='bylink comments empty may-blank')['href']
-
     # This link we've already scraped, so then just exit.
-    if reddit_post in seen_before:
+    if link in seen_before:
         break
 
-    print(reddit_post)
-    results.append(reddit_post)
+    print(link)
+    results.append(link)
 
 # Append if file is new, prepend if file already has links in it.
 if not os.path.exists(subreddit):
