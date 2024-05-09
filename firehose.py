@@ -46,11 +46,11 @@ for div in soup.find_all('div', class_='entry unvoted'):
 
 # Append if file is new, prepend if file already has links in it.
 if not os.path.exists(subreddit):
-    with open(subreddit, 'a') as fp:
+    with open(subreddit, 'w') as fp:
         print('\n'.join(results), file=fp)
 else:
     # Must be better way to do this? TODO
     with open(subreddit, 'r') as fp:
-        content = fp.read() + '\n'.join(results) + '\n'
+        content = '\n'.join(results) + '\n' + fp.read()
     with open(subreddit, 'w') as fp:
         fp.write(content)
